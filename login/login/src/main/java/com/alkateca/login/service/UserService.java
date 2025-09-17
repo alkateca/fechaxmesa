@@ -1,11 +1,13 @@
 package com.alkateca.login.service;
 
 import com.alkateca.login.dto.UserRequestDTO;
+import com.alkateca.login.dto.UserUpdateRequestDTO;
 import com.alkateca.login.model.User;
 import com.alkateca.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Service
@@ -30,5 +32,24 @@ public class UserService {
 
         return userRepository.save(newUser);
     }
+
+    public User updateUser(Long id, @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        if(userUpdateRequestDTO.email() != null){
+            user.setEmail(userUpdateRequestDTO.email());
+        }
+        if(userUpdateRequestDTO.avatar() != null){
+            user.setAvatar(userUpdateRequestDTO.avatar());
+        }
+        if(userUpdateRequestDTO.name() != null){
+            user.setName(userUpdateRequestDTO.name());
+        }
+        if(userUpdateRequestDTO.password() != null){
+            user.setPassword(passwordEncoder.encode(userUpdateRequestDTO.password()));
+        }
+
+        return userRepository.save(user);
+    }
+
 
 }

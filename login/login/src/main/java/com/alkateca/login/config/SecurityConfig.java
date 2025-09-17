@@ -30,7 +30,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.ignoringRequestMatchers(
                 "/users/login/**",
-                        "/users/register"))
+                        "/users/register",
+                        "/users/**"))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                         .anyRequest().authenticated())
