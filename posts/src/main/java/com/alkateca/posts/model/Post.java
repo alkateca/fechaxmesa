@@ -1,6 +1,6 @@
-package com.alkateca.login.model;
+package com.alkateca.posts.model;
 
-import com.alkateca.login.enums.Tag;
+import com.alkateca.posts.enums.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,9 +22,7 @@ public class Post {
     private String title;
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Long userId;
 
     @Enumerated(EnumType.STRING)
     private Tag tags;

@@ -1,4 +1,4 @@
-package com.alkateca.login.enums;
+package com.alkateca.posts.enums;
 
 public enum Tag {
 
