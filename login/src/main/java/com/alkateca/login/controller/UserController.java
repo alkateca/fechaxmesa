@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -35,9 +36,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(
-            @PathVariable Long id,
-            @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
         User updatedUser = userService.updateUser(id, userUpdateRequestDTO);
 
         UserResponseDTO responseDTO = new UserResponseDTO(
@@ -47,6 +46,7 @@ public class UserController {
                 updatedUser.getAvatar()
         );
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
+
 }
