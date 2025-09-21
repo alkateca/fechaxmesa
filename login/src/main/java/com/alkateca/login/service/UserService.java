@@ -51,5 +51,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    //Criar conexão com o serviço de email
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
 
 }

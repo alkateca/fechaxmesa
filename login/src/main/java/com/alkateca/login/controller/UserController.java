@@ -49,4 +49,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
+
+    //Criar conexão com serviço de email
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        UserResponseDTO responseDTO = new UserResponseDTO(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getAvatar()
+        );
+        return ResponseEntity.ok(responseDTO);
+    }
 }

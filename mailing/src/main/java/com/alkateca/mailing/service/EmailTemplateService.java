@@ -1,0 +1,67 @@
+package com.alkateca.mailing.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class EmailTemplateService {
+
+    public String buildAdventureRequestEmail(String username, String userEmail) {
+
+        return "<!DOCTYPE html>"
+                + "<html lang=\"pt-br\">"
+                + "<head>"
+                + "  <meta charset=\"UTF-8\">"
+                + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+                + "  <title>Nova Solicitação de Aventura</title>"
+                + "</head>"
+                + "<body style=\"margin: 0; padding: 0; background-color: #f4f4f4; font-family: Arial, sans-serif;\">"
+                + "  <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">"
+                + "    <tr>"
+                + "      <td style=\"padding: 20px 0 30px 0;\">"
+                + "        "
+                + "        <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width: 600px; border-collapse: collapse; background-color: #ffffff; box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);\">"
+                + "          "
+                + "          <tr>"
+                + "            <td align=\"center\" style=\"background-color: #2c3e50; padding: 30px 20px;\">"
+                + "              <h1 style=\"color: #ffffff; margin: 0; font-size: 24px;\">Nova Solicitação de Aventura</h1>"
+                + "            </td>"
+                + "          </tr>"
+                + "          "
+                + "          <tr>"
+                + "            <td style=\"padding: 40px 30px;\">"
+                + "              <p style=\"margin: 0 0 20px 0; font-size: 16px; color: #333333; line-height: 1.5;\">Olá Mestre da Aventura,</p>"
+                + "              <p style=\"margin: 0 0 20px 0; font-size: 16px; color: #333333; line-height: 1.5;\">"
+                + "                O usuário <strong>" + username + "</strong> deseja participar de sua aventura!"
+                + "              </p>"
+                + "              <p style=\"margin: 0 0 20px 0; font-size: 16px; color: #333333; line-height: 1.5;\">"
+                + "                Informações de contato:"
+                + "              </p>"
+                + "              <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f9f9f9; border-left: 4px solid #2c3e50; padding: 15px 20px;\">"
+                + "                <tr>"
+                + "                  <td>"
+                + "                    <a href=\"mailto:" + userEmail + "\" style=\"color: #2c3e50; text-decoration: none; font-size: 16px; font-weight: bold;\">" + userEmail + "</a>"
+                + "                  </td>"
+                + "                </tr>"
+                + "              </table>"
+                + "              <p style=\"margin: 40px 0 0 0; font-size: 16px; color: #333333; line-height: 1.5;\">"
+                + "                Boa sorte e boas rolagens!"
+                + "              </p>"
+                + "            </td>"
+                + "          </tr>"
+                + "          "
+                + "          <tr>"
+                + "            <td align=\"center\" style=\"background-color: #eeeeee; padding: 20px 30px;\">"
+                + "              <p style=\"margin: 0; font-size: 12px; color: #666666;\">"
+                + "                Este é um e-mail automático enviado pela plataforma Aventura Garantida."
+                + "              </p>"
+                + "            </td>"
+                + "          </tr>"
+                + "        </table>"
+                + "        "
+                + "      </td>"
+                + "    </tr>"
+                + "  </table>"
+                + "</body>"
+                + "</html>";
+    }
+}

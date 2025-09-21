@@ -28,12 +28,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.ignoringRequestMatchers(
-                "/users/login/**",
+        http
+                .csrf(csrf -> csrf.ignoringRequestMatchers(
+                        "/users/login/**",
                         "/users/register",
                         "/users/**"))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/{id}").permitAll()
                         .anyRequest().authenticated())
                         .formLogin(form -> form.loginProcessingUrl("/users/login")
                         .successHandler((request, response, authentication) -> {
