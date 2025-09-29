@@ -18,7 +18,7 @@ public class NotificationController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/adventure-request")
+    @PostMapping()
     public ResponseEntity<String> sendAdventureRequest(@RequestBody NotificationRequestDTO request) {
         try {
             emailService.buildAdventureRequestEmail(

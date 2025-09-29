@@ -10,7 +10,6 @@ public class UserApiClient {
 
     private final RestTemplate restTemplate;
 
-    // Injetando a URL base da API de usuários a partir do application.properties
     @Value("${api.login.base-url}")
     private String loginApiBaseUrl;
 
@@ -19,10 +18,8 @@ public class UserApiClient {
     }
 
     public UserResponseDTO findUserById(Long userId) {
-        // Constrói a URL completa: http://localhost:8080/users/1
         String url = loginApiBaseUrl + "/users/" + userId;
 
-        // Faz a chamada GET, espera uma resposta JSON e a converte para nosso DTO
         return restTemplate.getForObject(url, UserResponseDTO.class);
     }
 }
