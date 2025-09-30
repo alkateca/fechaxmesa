@@ -1,13 +1,14 @@
 package com.alkateca.login.service;
 
 import com.alkateca.login.dto.UserRequestDTO;
-import com.alkateca.login.dto.UserUpdateRequestDTO;
 import com.alkateca.login.model.User;
 import com.alkateca.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 
 @Service
@@ -33,19 +34,19 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public User updateUser(Long id, @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
+    public User updateUser(Long id, @RequestBody UserRequestDTO userRequestDTO) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        if(userUpdateRequestDTO.email() != null){
-            user.setEmail(userUpdateRequestDTO.email());
+        if(userRequestDTO.email() != null){
+            user.setEmail(userRequestDTO.email());
         }
-        if(userUpdateRequestDTO.avatar() != null){
-            user.setAvatar(userUpdateRequestDTO.avatar());
+        if(userRequestDTO.avatar() != null){
+            user.setAvatar(userRequestDTO.avatar());
         }
-        if(userUpdateRequestDTO.name() != null){
-            user.setName(userUpdateRequestDTO.name());
+        if(userRequestDTO.name() != null){
+            user.setName(userRequestDTO.name());
         }
-        if(userUpdateRequestDTO.password() != null){
-            user.setPassword(passwordEncoder.encode(userUpdateRequestDTO.password()));
+        if(userRequestDTO.password() != null){
+            user.setPassword(userRequestDTO.password());
         }
 
         return userRepository.save(user);
@@ -54,6 +55,10 @@ public class UserService {
     //Criar conexão com o serviço de email
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+    
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 }

@@ -1,19 +1,16 @@
 package com.alkateca.login.controller;
 
-import com.alkateca.login.dto.LoginRequestDTO;
 import com.alkateca.login.dto.UserRequestDTO;
 import com.alkateca.login.dto.UserResponseDTO;
-import com.alkateca.login.dto.UserUpdateRequestDTO;
 import com.alkateca.login.model.User;
+import com.alkateca.login.repository.UserRepository;
 import com.alkateca.login.service.UserService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/users")
@@ -21,23 +18,29 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
+
         User newUser = userService.createUser(userRequestDTO);
-        UserResponseDTO responseDTO = new UserResponseDTO(
+
+        UserResponseDTO userResponseDTO = new UserResponseDTO(
                 newUser.getId(),
                 newUser.getName(),
                 newUser.getEmail(),
                 newUser.getAvatar()
         );
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        return  ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody UserUpdateRequestDTO userUpdateRequestDTO) {
-        User updatedUser = userService.updateUser(id, userUpdateRequestDTO);
+    public ResponseEntity<UserResponseDTO> update(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
+        User updatedUser = userService.updateUser(id, userRequestDTO);
 
         UserResponseDTO responseDTO = new UserResponseDTO(
                 updatedUser.getId(),
@@ -51,7 +54,6 @@ public class UserController {
 
 
     //Criar conexão com serviço de email
-
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
         User user = userService.getUserById(id);
@@ -63,4 +65,5 @@ public class UserController {
         );
         return ResponseEntity.ok(responseDTO);
     }
+
 }
