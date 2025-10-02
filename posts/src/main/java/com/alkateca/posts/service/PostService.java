@@ -4,7 +4,9 @@ import com.alkateca.posts.dto.PostRequestDTO;
 import com.alkateca.posts.model.Post;
 import com.alkateca.posts.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PostService {
@@ -25,8 +27,12 @@ public class PostService {
     }
 
     public Post updatePost(Long id, PostRequestDTO postRequestDTO) {
+
         Post post = postRepository.findById(id).orElse(null);
-        if(post != null && postRequestDTO.content()!=null) {
+        if(post == null) {
+            throw new ResponseStatusException(HttpStatusCode.valueOf(404), "Post not found");
+        }
+        if(postRequestDTO.content() != null) {
             post.setContent(postRequestDTO.content());
             postRepository.save(post);
         }
@@ -34,7 +40,7 @@ public class PostService {
     }
 
     public Post findByUserId(Long userId) {
-        return postRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        return postRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatusCode.valueOf(404),"User not found"));
     }
 
     public void deletePost(Long id) {

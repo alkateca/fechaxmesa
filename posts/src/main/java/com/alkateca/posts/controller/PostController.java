@@ -51,11 +51,13 @@ public class PostController {
 
     @DeleteMapping("/{id}")
     public void PostDelete(@PathVariable Long id) {
+
         postService.deletePost(id);
     }
 
     @GetMapping("/{userId}")
     public Post getUserPosts(@PathVariable Long userId) {
+
         return postService.findByUserId(userId);
     }
 }
