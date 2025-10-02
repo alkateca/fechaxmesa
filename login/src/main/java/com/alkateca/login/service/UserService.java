@@ -4,9 +4,13 @@ import com.alkateca.login.dto.UserRequestDTO;
 import com.alkateca.login.model.User;
 import com.alkateca.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,8 +25,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public User createUser(UserRequestDTO userRequestDTO) {
-        if(userRepository.findByEmail(userRequestDTO.email()).isPresent()){
-            throw new RuntimeException("Email já cadastrado");
+
+        if(userRepository
+                .findByEmail(userRequestDTO.email()).isPresent()){
+            throw new ResponseStatusException(HttpStatusCode.valueOf(409), "Email já cadastrado");
         }
 
         User newUser = new User();
@@ -54,11 +60,10 @@ public class UserService {
 
     //Criar conexão com o serviço de email
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
     
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
 
 }
