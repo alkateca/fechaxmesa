@@ -7,6 +7,7 @@ import com.alkateca.posts.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +21,11 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequestDTO) {
-        Post newPost = postService.createPost(postRequestDTO);
+    public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequestDTO, Authentication authentication) {
+        String userId = authentication.getName();
+
+        Post newPost = postService.createPost(postRequestDTO, userId);
+
         PostResponseDTO responseDTO = new PostResponseDTO(
                 newPost.getId(),
                 newPost.getTitle(),
@@ -34,8 +38,12 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostResponseDTO> updatePost(@PathVariable Long id, @RequestBody PostRequestDTO postRequestDTO) {
-        Post updatedPost = postService.updatePost(id, postRequestDTO);
+    public ResponseEntity<PostResponseDTO> updatePost(@PathVariable Long id,
+                                                      @RequestBody PostRequestDTO postRequestDTO,
+                                                      Authentication authentication) {
+
+        String userId = authentication.getName();
+        Post updatedPost = postService.updatePost(id, postRequestDTO, userId);
 
         PostResponseDTO responseDTO = new PostResponseDTO(
                 updatedPost.getId(),
@@ -50,14 +58,22 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public void PostDelete(@PathVariable Long id) {
-
-        postService.deletePost(id);
+    public void PostDelete(@PathVariable Long id,
+                           Authentication authentication) {
+        String userId = authentication.getName();
+        postService.deletePost(id, userId);
     }
 
-    @GetMapping("/{userId}")
-    public Post getUserPosts(@PathVariable Long userId) {
+    @GetMapping("/{id}")
+    public List<Post> getUserPosts(@PathVariable Long id) {
 
-        return postService.findByUserId(userId);
+        return postService.findByUserId(id);
+    }
+
+    @GetMapping("/me")
+    public List<Post> getMyPosts(Authentication authentication) {
+        String currentUserId = authentication.getName();
+        return postService.findByUserId(Long.valueOf(currentUserId));
     }
 }
+
